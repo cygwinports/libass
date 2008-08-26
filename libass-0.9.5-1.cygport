@@ -1,0 +1,15 @@
+DESCRIPTION="SSA/ASS subtitles rendering library"
+HOMEPAGE="http://sourceforge.net/projects/libass/"
+SRC_URI="mirror://sourceforge/libass/${P}.tar.bz2"
+PATCH_URI="
+	0.9.5-no-undefined.patch
+	0.9.5-iconv.patch
+	0.9.5-vpath.patch
+"
+
+abi=1
+PKG_NAMES="${PN} ${PN}${abi} ${PN}-devel"
+PKG_HINTS="src dll devel"
+PKG_CONTENTS[0]=	# empty
+PKG_CONTENTS[1]="usr/bin/*-${abi}.dll usr/share/doc/"
+PKG_CONTENTS[2]="usr/include/ usr/lib/"

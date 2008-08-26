@@ -1,0 +1,78 @@
+--- origsrc/libass-0.9.5/configure.ac	2008-05-22 14:04:13.000000000 -0500
++++ src/libass-0.9.5/configure.ac	2008-08-25 21:05:45.338724700 -0500
+@@ -12,8 +12,8 @@
+ 
+ # Checks for libraries.
+ AC_CHECK_LIB([png], [png_create_write_struct], AC_DEFINE(HAVE_LIBPNG, 1, [use libpng]))
+-AC_SEARCH_LIBS([iconv_open], [iconv], AC_DEFINE(USE_ICONV, 1, [use iconv]))
+ AC_CHECK_LIB([enca], [enca_analyser_alloc], [AC_DEFINE(HAVE_ENCA, 1, [use enca])  LIBS="$LIBS -lenca"])
++AM_ICONV
+ 
+ # Checks for header files.
+ AC_HEADER_STDC
+--- origsrc/libass-0.9.5/libass/Makefile.am	2008-08-25 21:07:50.494974700 -0500
++++ src/libass-0.9.5/libass/Makefile.am	2008-08-25 21:08:12.744974700 -0500
+@@ -8,6 +8,7 @@
+                     ass_bitmap.h ass_cache.h ass_fontconfig.h ass_font.h ass.h \
+                     ass_library.h ass_types.h ass_utils.h help_mp.h mputils.h
+ libass_la_LDFLAGS = -version-info $(LIBASS_LT_CURRENT):$(LIBASS_LT_REVISION):$(LIBASS_LT_AGE) -no-undefined
++libass_la_LIBADD = $(LTLIBICONV)
+ 
+ assheadersdir = $(includedir)/ass
+ dist_assheaders_HEADERS = ass.h ass_types.h
+--- origsrc/libass-0.9.5/libass/ass.c	2008-05-22 13:01:18.000000000 -0500
++++ src/libass-0.9.5/libass/ass.c	2008-08-25 21:07:18.776224700 -0500
+@@ -32,7 +32,7 @@
+ #include <unistd.h>
+ #include <inttypes.h>
+ 
+-#ifdef USE_ICONV
++#ifdef HAVE_ICONV
+ #include <iconv.h>
+ #endif
+ 
+@@ -810,7 +810,7 @@
+ 	free(str);
+ }
+ 
+-#ifdef USE_ICONV
++#ifdef HAVE_ICONV
+ /** \brief recode buffer to utf-8
+  * constraint: codepage != 0
+  * \param data pointer to text buffer
+@@ -843,7 +843,7 @@
+ 		size_t osize = size;
+ 		size_t ileft = size;
+ 		size_t oleft = size - 1;
+-		char* ip;
++		ICONV_CONST char* ip;
+ 		char* op;
+ 		size_t rc;
+ 		
+@@ -983,7 +983,7 @@
+ 	if (!buf)
+ 		return 0;
+ 	
+-#ifdef USE_ICONV
++#ifdef HAVE_ICONV
+ 	if (codepage)
+ 		buf = sub_recode(buf, bufsize, codepage);
+ 	if (!buf)
+@@ -1009,7 +1009,7 @@
+ 	buf = read_file(fname, &bufsize);
+ 	if (!buf)
+ 		return 0;
+-#ifdef USE_ICONV
++#ifdef HAVE_ICONV
+ 	if (codepage) {
+ 		 char* tmpbuf = sub_recode(buf, bufsize, codepage);
+ 		 free(buf);
+@@ -1063,7 +1063,7 @@
+ 	buf = read_file(fname, &sz);
+ 	if (!buf)
+ 		return 1;
+-#ifdef USE_ICONV
++#ifdef HAVE_ICONV
+ 	if (codepage) {
+ 		char* tmpbuf;
+ 		tmpbuf = sub_recode(buf, sz, codepage);
