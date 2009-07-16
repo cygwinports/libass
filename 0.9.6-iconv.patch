@@ -1,18 +1,17 @@
---- origsrc/libass-0.9.5/configure.ac	2008-05-22 14:04:13.000000000 -0500
-+++ src/libass-0.9.5/configure.ac	2008-08-25 21:05:45.338724700 -0500
-@@ -12,8 +12,8 @@
+--- origsrc/libass-0.9.6/configure.ac	2009-03-13 12:51:03.000000000 -0500
++++ src/libass-0.9.6/configure.ac	2009-07-15 20:13:29.636717100 -0500
+@@ -12,7 +12,7 @@ AC_PROG_CPP
  
  # Checks for libraries.
- AC_CHECK_LIB([png], [png_create_write_struct], AC_DEFINE(HAVE_LIBPNG, 1, [use libpng]))
--AC_SEARCH_LIBS([iconv_open], [iconv], AC_DEFINE(USE_ICONV, 1, [use iconv]))
- AC_CHECK_LIB([enca], [enca_analyser_alloc], [AC_DEFINE(HAVE_ENCA, 1, [use enca])  LIBS="$LIBS -lenca"])
+ AC_CHECK_LIB([png], [png_create_write_struct], AC_DEFINE(CONFIG_LIBPNG, 1, [use libpng]))
+-AC_SEARCH_LIBS([iconv_open], [iconv], AC_DEFINE(CONFIG_ICONV, 1, [use iconv]))
 +AM_ICONV
+ AC_CHECK_LIB([enca], [enca_analyser_alloc], [AC_DEFINE(CONFIG_ENCA, 1, [use enca])  LIBS="$LIBS -lenca"])
  
  # Checks for header files.
- AC_HEADER_STDC
---- origsrc/libass-0.9.5/libass/Makefile.am	2008-08-25 21:07:50.494974700 -0500
-+++ src/libass-0.9.5/libass/Makefile.am	2008-08-25 21:08:12.744974700 -0500
-@@ -8,6 +8,7 @@
+--- origsrc/libass-0.9.6/libass/Makefile.am	2009-07-15 20:10:39.660369900 -0500
++++ src/libass-0.9.6/libass/Makefile.am	2009-07-15 20:13:53.085825400 -0500
+@@ -8,6 +8,7 @@ libass_la_SOURCES = ass.c ass_cache.c as
                      ass_bitmap.h ass_cache.h ass_fontconfig.h ass_font.h ass.h \
                      ass_library.h ass_types.h ass_utils.h help_mp.h mputils.h
  libass_la_LDFLAGS = -version-info $(LIBASS_LT_CURRENT):$(LIBASS_LT_REVISION):$(LIBASS_LT_AGE) -no-undefined
@@ -20,27 +19,27 @@
  
  assheadersdir = $(includedir)/ass
  dist_assheaders_HEADERS = ass.h ass_types.h
---- origsrc/libass-0.9.5/libass/ass.c	2008-05-22 13:01:18.000000000 -0500
-+++ src/libass-0.9.5/libass/ass.c	2008-08-25 21:07:18.776224700 -0500
+--- origsrc/libass-0.9.6/libass/ass.c	2009-03-13 12:37:09.000000000 -0500
++++ src/libass-0.9.6/libass/ass.c	2009-07-15 20:14:50.706705900 -0500
 @@ -32,7 +32,7 @@
  #include <unistd.h>
  #include <inttypes.h>
  
--#ifdef USE_ICONV
+-#ifdef CONFIG_ICONV
 +#ifdef HAVE_ICONV
  #include <iconv.h>
  #endif
  
-@@ -810,7 +810,7 @@
+@@ -826,7 +826,7 @@ void ass_process_chunk(ass_track_t* trac
  	free(str);
  }
  
--#ifdef USE_ICONV
+-#ifdef CONFIG_ICONV
 +#ifdef HAVE_ICONV
  /** \brief recode buffer to utf-8
   * constraint: codepage != 0
   * \param data pointer to text buffer
-@@ -843,7 +843,7 @@
+@@ -859,7 +859,7 @@ static char* sub_recode(char* data, size
  		size_t osize = size;
  		size_t ileft = size;
  		size_t oleft = size - 1;
@@ -48,30 +47,30 @@
 +		ICONV_CONST char* ip;
  		char* op;
  		size_t rc;
- 		
-@@ -983,7 +983,7 @@
+ 		int clear = 0;
+@@ -1007,7 +1007,7 @@ ass_track_t* ass_read_memory(ass_library
  	if (!buf)
  		return 0;
  	
--#ifdef USE_ICONV
+-#ifdef CONFIG_ICONV
 +#ifdef HAVE_ICONV
  	if (codepage)
  		buf = sub_recode(buf, bufsize, codepage);
  	if (!buf)
-@@ -1009,7 +1009,7 @@
+@@ -1033,7 +1033,7 @@ char* read_file_recode(char* fname, char
  	buf = read_file(fname, &bufsize);
  	if (!buf)
  		return 0;
--#ifdef USE_ICONV
+-#ifdef CONFIG_ICONV
 +#ifdef HAVE_ICONV
  	if (codepage) {
  		 char* tmpbuf = sub_recode(buf, bufsize, codepage);
  		 free(buf);
-@@ -1063,7 +1063,7 @@
+@@ -1087,7 +1087,7 @@ int ass_read_styles(ass_track_t* track, 
  	buf = read_file(fname, &sz);
  	if (!buf)
  		return 1;
--#ifdef USE_ICONV
+-#ifdef CONFIG_ICONV
 +#ifdef HAVE_ICONV
  	if (codepage) {
  		char* tmpbuf;

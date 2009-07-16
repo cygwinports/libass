@@ -3,13 +3,11 @@ HOMEPAGE="http://sourceforge.net/projects/libass/"
 SRC_URI="mirror://sourceforge/libass/${P}.tar.bz2"
 PATCH_URI="
 	0.9.5-no-undefined.patch
-	0.9.5-iconv.patch
+	0.9.6-iconv.patch
 	0.9.5-vpath.patch
 "
 
-abi=1
-PKG_NAMES="${PN} ${PN}${abi} ${PN}-devel"
+PKG_NAMES="${PN} ${PN}3 ${PN}-devel"
 PKG_HINTS="src dll devel"
-PKG_CONTENTS[0]=	# empty
-PKG_CONTENTS[1]="usr/bin/*-${abi}.dll usr/share/doc/"
-PKG_CONTENTS[2]="usr/include/ usr/lib/"
+libass3_CONTENTS="usr/bin/*-3.dll usr/share/doc/"
+libass_devel_CONTENTS="usr/include/ usr/lib/"
