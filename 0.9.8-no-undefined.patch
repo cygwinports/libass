@@ -1,0 +1,11 @@
+--- origsrc/libass-0.9.8/libass/Makefile.am	2009-09-01 18:04:52.000000000 -0500
++++ src/libass-0.9.8/libass/Makefile.am	2009-11-11 22:01:54.547768300 -0600
+@@ -9,7 +9,7 @@ libass_la_SOURCES = ass.c ass_cache.c as
+                     ass_library.h ass_types.h ass_utils.h ass_drawing.c \
+                     ass_drawing.h ass_cache_template.h ass_render.h \
+                     ass_parse.c ass_parse.h
+-libass_la_LDFLAGS = -version-info $(LIBASS_LT_CURRENT):$(LIBASS_LT_REVISION):$(LIBASS_LT_AGE)
++libass_la_LDFLAGS = -version-info $(LIBASS_LT_CURRENT):$(LIBASS_LT_REVISION):$(LIBASS_LT_AGE) -no-undefined
+ libass_la_LDFLAGS += -export-symbols $(srcdir)/libass.sym
+ 
+ assheadersdir = $(includedir)/ass

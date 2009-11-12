@@ -1,0 +1,13 @@
+DESCRIPTION="SSA/ASS subtitles rendering library"
+HOMEPAGE="http://code.google.com/p/libass/"
+SRC_URI="http://libass.googlecode.com/files/${P}.tar.bz2"
+PATCH_URI="
+	0.9.8-no-undefined.patch
+	0.9.8-iconv.patch
+	0.9.5-vpath.patch
+"
+
+PKG_NAMES="${PN} ${PN}4 ${PN}-devel"
+PKG_HINTS="src dll devel"
+libass4_CONTENTS="usr/bin/*-4.dll usr/share/doc/"
+libass_devel_CONTENTS="usr/include/ usr/lib/"

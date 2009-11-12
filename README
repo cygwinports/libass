@@ -3,10 +3,10 @@ libass
 LibASS is a portable library for SSA/ASS subtitles rendering.
 
 Runtime requirements:
-  cygwin-1.7.0-51
-  libfontconfig1-2.6.0-10
-  libfreetype6-2.3.9-1
-  libgcc1-4.3.2-2
+  cygwin-1.7.0-62
+  libfontconfig1-2.7.3-1
+  libfreetype6-2.3.11-1
+  libgcc1-4.3.4-1
   libiconv2-1.13-10
 
 Build requirements:
@@ -14,53 +14,40 @@ Build requirements:
   autoconf2.5-2.63-10
   automake1.10-1.10.2-10
   binutils-2.19.51-1
-  cygport-0.9.7-1
-  gawk-3.1.6-2
-  gcc4-core-4.3.2-2
+  cygport-0.9.10-1
+  gawk-3.1.7-1
+  gcc4-core-4.3.4-1
   libtool-2.2.7a-14
   make-3.81-2
   pkg-config-0.23b-10
   sed-4.1.5-2
 
 Canonical website:
-  http://sourceforge.net/projects/libass/
+  http://code.google.com/p/libass/
 
 Canonical download:
-  http://sourceforge.net/projects/libass/files
+  http://code.google.com/p/libass/downloads/list
 
 -------------------------------------------
 
 Build instructions:
-  unpack libass-0.9.6-X-src.tar.bz2
+  unpack libass-0.9.8-X-src.tar.bz2
     if you use setup to install this src package, it will be
 	 unpacked under /usr/src automatically
   cd /usr/src
-  cygport ./libass-0.9.6-X.cygport all
+  cygport ./libass-0.9.8-X.cygport all
 
 This will create:
-  /usr/src/libass-0.9.6-X-src.tar.bz2
-  /usr/src/libass-devel-0.9.6-X.tar.bz2
-  /usr/src/libass3-0.9.6-X.tar.bz2
+  /usr/src/libass-0.9.8-X-src.tar.bz2
+  /usr/src/libass-devel-0.9.8-X.tar.bz2
+  /usr/src/libass4-0.9.8-X.tar.bz2
 
 -------------------------------------------
 
-Files included in the binary packages:
-
-(libass3)
-  /usr/bin/cygass-3.dll
-  /usr/share/doc/libass/COPYING
-
-(libass-devel)
-  /usr/include/ass/ass.h
-  /usr/include/ass/ass_types.h
-  /usr/lib/libass.a
-  /usr/lib/libass.dll.a
-  /usr/lib/libass.la
-  /usr/lib/pkgconfig/libass.pc
-
-------------------
-
 Port Notes:
+
+----- version 0.9.8-1 -----
+ABI version bump.
 
 ----- version 0.9.6-1 -----
 Initial release for Cygwin 1.7.
