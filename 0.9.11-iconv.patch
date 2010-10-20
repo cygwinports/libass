@@ -1,5 +1,5 @@
---- origsrc/libass-0.9.8/configure.ac	2009-09-17 18:43:35.000000000 -0500
-+++ src/libass-0.9.8/configure.ac	2009-11-11 22:04:31.250041500 -0600
+--- origsrc/libass-0.9.11/configure.ac	2010-10-20 01:23:35.483138000 -0500
++++ src/libass-0.9.11/configure.ac	2010-10-20 01:23:05.000000000 -0500
 @@ -16,7 +16,7 @@ AM_PROG_CC_C_O
  # Checks for header files.
  AC_HEADER_STDC
@@ -18,19 +18,19 @@
  AC_CHECK_LIB([m], [fabs])
  
  # Check for libraries via pkg-config
---- origsrc/libass-0.9.8/libass/Makefile.am	2009-11-11 22:03:58.755184900 -0600
-+++ src/libass-0.9.8/libass/Makefile.am	2009-11-11 22:04:47.505269900 -0600
-@@ -11,6 +11,7 @@ libass_la_SOURCES = ass.c ass_cache.c as
-                     ass_parse.c ass_parse.h
- libass_la_LDFLAGS = -version-info $(LIBASS_LT_CURRENT):$(LIBASS_LT_REVISION):$(LIBASS_LT_AGE) -no-undefined
+--- origsrc/libass-0.9.11/libass/Makefile.am	2010-10-20 01:23:35.483138000 -0500
++++ src/libass-0.9.11/libass/Makefile.am	2010-10-20 01:23:05.000000000 -0500
+@@ -13,6 +13,7 @@ libass_la_SOURCES = ass.c ass_cache.c as
+                     ass_parse.c ass_parse.h ass_render_api.c ass_strtod.c
+ libass_la_LDFLAGS = -version-info $(LIBASS_LT_CURRENT):$(LIBASS_LT_REVISION):$(LIBASS_LT_AGE)
  libass_la_LDFLAGS += -export-symbols $(srcdir)/libass.sym
 +libass_la_LIBADD = $(LTLIBICONV)
  
  assheadersdir = $(includedir)/ass
  dist_assheaders_HEADERS = ass.h ass_types.h
---- origsrc/libass-0.9.8/libass/ass.c	2009-09-08 15:04:44.000000000 -0500
-+++ src/libass-0.9.8/libass/ass.c	2009-11-11 22:05:29.968543900 -0600
-@@ -30,7 +30,7 @@
+--- origsrc/libass-0.9.11/libass/ass.c	2010-10-20 01:23:35.493138000 -0500
++++ src/libass-0.9.11/libass/ass.c	2010-10-20 01:23:22.763191100 -0500
+@@ -31,7 +31,7 @@
  #include <unistd.h>
  #include <inttypes.h>
  
@@ -39,8 +39,8 @@
  #include <iconv.h>
  #endif
  
-@@ -909,7 +909,7 @@ void ass_process_chunk(ASS_Track *track,
-     free(str);
+@@ -911,7 +911,7 @@ void ass_flush_events(ASS_Track *track)
+     }
  }
  
 -#ifdef CONFIG_ICONV
@@ -48,7 +48,7 @@
  /** \brief recode buffer to utf-8
   * constraint: codepage != 0
   * \param data pointer to text buffer
-@@ -946,7 +946,7 @@ static char *sub_recode(ASS_Library *lib
+@@ -948,7 +948,7 @@ static char *sub_recode(ASS_Library *lib
          size_t osize = size;
          size_t ileft = size;
          size_t oleft = size - 1;
@@ -57,16 +57,16 @@
          char *op;
          size_t rc;
          int clear = 0;
-@@ -1099,7 +1099,7 @@ ASS_Track *ass_read_memory(ASS_Library *
+@@ -1093,7 +1093,7 @@ ASS_Track *ass_read_memory(ASS_Library *
      if (!buf)
          return 0;
  
 -#ifdef CONFIG_ICONV
 +#ifdef HAVE_ICONV
-     if (codepage)
+     if (codepage) {
          buf = sub_recode(library, buf, bufsize, codepage);
-     if (!buf)
-@@ -1128,7 +1128,7 @@ static char *read_file_recode(ASS_Librar
+         if (!buf)
+@@ -1123,7 +1123,7 @@ static char *read_file_recode(ASS_Librar
      buf = read_file(library, fname, &bufsize);
      if (!buf)
          return 0;
@@ -75,7 +75,7 @@
      if (codepage) {
          char *tmpbuf = sub_recode(library, buf, bufsize, codepage);
          free(buf);
-@@ -1184,7 +1184,7 @@ int ass_read_styles(ASS_Track *track, ch
+@@ -1179,7 +1179,7 @@ int ass_read_styles(ASS_Track *track, ch
      buf = read_file(track->library, fname, &sz);
      if (!buf)
          return 1;
