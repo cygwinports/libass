@@ -1,5 +1,5 @@
 category: Video
-requires: libass4 libfontconfig-devel libfreetype-devel libiconv
+requires: libass4 libfontconfig-devel libfreetype-devel libfribidi-devel libiconv
 external-source: libass
 sdesc: "SSA/ASS subtitles rendering library (libdevel)"
 ldesc: "LibASS is a portable library for SSA/ASS subtitles rendering."
