@@ -1,0 +1,18 @@
+NAME="libass"
+VERSION=0.10.1
+RELEASE=1
+CATEGORY="Libs"
+SUMMARY="SSA/ASS subtitle rendering library"
+DESCRIPTION="LibASS is a portable library for SSA/ASS (Substation Alpha)
+subtitle rendering."
+HOMEPAGE="http://code.google.com/p/libass/"
+SRC_URI="http://libass.googlecode.com/files/libass-${VERSION}.tar.xz"
+PATCH_URI="
+	0.9.11-no-undefined.patch
+	0.9.11-iconv.patch
+	0.9.5-vpath.patch
+"
+
+PKG_NAMES="${NAME}4 ${NAME}-devel"
+libass4_CONTENTS="usr/bin/*-4.dll usr/share/doc/"
+libass_devel_CONTENTS="usr/include/ usr/lib/"
